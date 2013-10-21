@@ -8,6 +8,7 @@ public final class ThreadPooledPrimeServer {
 	
 	private ExecutorService executor;
 	private final ServerEndpoint endpoint;
+	
 	public volatile boolean exit;
 	
 	private static final int MAX_THREADS = 2;
@@ -24,9 +25,11 @@ public final class ThreadPooledPrimeServer {
 
 		new Thread(new ServerStop(this)).start();
 		
-		while (!exit)
+		while (true)
 		{
 			ServerEndpoint.Request request = endpoint.blockingReceive();
+			if (exit)
+				break;
 			PrimeCalculator calc = new PrimeCalculator(endpoint, request);
 			executor.execute(calc);
 		}
