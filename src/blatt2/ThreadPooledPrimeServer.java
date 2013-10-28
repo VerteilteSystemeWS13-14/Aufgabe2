@@ -28,8 +28,9 @@ public final class ThreadPooledPrimeServer {
 		while (true)
 		{
 			ServerEndpoint.Request request = endpoint.blockingReceive();
-			if (exit)
-				break;
+			if (exit){
+				break;				
+			}
 			PrimeCalculator calc = new PrimeCalculator(endpoint, request);
 			executor.execute(calc);
 		}
